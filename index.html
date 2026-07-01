@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>One Question ❤️</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#ffe6ef;
+    font-family:Arial;
+}
+
+.card{
+    text-align:center;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+button{
+    padding:15px 35px;
+    margin:15px;
+    font-size:20px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+#yes{
+    background:#ff4f87;
+    color:white;
+}
+
+#no{
+    background:#ddd;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+<h1>Will you go on a date with me? ❤️</h1>
+
+<button id="yes">Yes ❤️</button>
+<button id="no">No 😢</button>
+
+<p id="message"></p>
+
+</div>
+
+<script>
+
+const noBtn=document.getElementById("no");
+const yesBtn=document.getElementById("yes");
+
+let count=0;
+
+noBtn.addEventListener("mouseover",()=>{
+
+    count++;
+
+    noBtn.style.position="absolute";
+    noBtn.style.left=Math.random()*80+"%";
+    noBtn.style.top=Math.random()*80+"%";
+
+    yesBtn.style.transform=`scale(${1+count*0.1})`;
+
+});
+
+yesBtn.addEventListener("click",()=>{
+
+document.body.innerHTML=`
+<div style="
+display:flex;
+height:100vh;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+font-family:Arial;
+background:#ffe6ef;">
+<h1>YAY!! ❤️</h1>
+<h2>I can't wait for our date 🥰</h2>
+<p>See you soon 💕</p>
+</div>`;
+
+});
+
+</script>
+
+</body>
+</html>

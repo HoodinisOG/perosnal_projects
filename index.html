@@ -1,139 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>One Question ❤️</title>
-
-<style>
-body {
-    margin: 0;
-    height: 100vh;
-    overflow: hidden;
-    font-family: Arial;
-    background: linear-gradient(135deg,#ffe6ef,#fff0f5);
-}
-
-/* Floating hearts */
-.heart {
-    position: absolute;
-    color: #ff4f87;
-    animation: floatUp 6s linear infinite;
-    opacity: 0.6;
-}
-
-@keyframes floatUp {
-    from { transform: translateY(100vh) scale(0.5); }
-    to { transform: translateY(-10vh) scale(1.2); }
-}
-
-/* Main card */
-.card {
-    position: relative;
-    z-index: 10;
-    text-align: center;
-    background: white;
-    padding: 30px;
-    margin: 20px;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,.15);
-    max-width: 420px;
-}
-
-/* Buttons */
-button {
-    padding: 14px 28px;
-    margin: 10px;
-    font-size: 18px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-#yes {
-    background: #ff4f87;
-    color: white;
-}
-
-#no {
-    background: #ddd;
-}
-
-/* Typewriter */
-.typewriter {
-    overflow: hidden;
-    border-right: .15em solid #ff4f87;
-    white-space: nowrap;
-    animation: typing 3s steps(40, end), blink .8s infinite;
-    width: 0;
-}
-
-@keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-}
-
-@keyframes blink {
-    50% { border-color: transparent }
-}
-
-/* Hidden sections */
-.hidden { display: none; }
-
-</style>
-</head>
-
-<body>
-
-<!-- Floating hearts background -->
-<div id="hearts"></div>
-
-<div class="card">
-
-    <h2 class="typewriter" id="intro">I have something to ask you...</h2>
-
-    <h1>Will you go on a date with me? ❤️</h1>
-
-    <p>Select where we should go (July 31 – August 1):</p>
-
-    <select id="city">
-        <option value="Vilnius">Vilnius 💛</option>
-        <option value="Kaunas">Kaunas 🌆</option>
-        <option value="Palanga">Palanga/Klaipeda 🌊</option>
-    </select>
-
-    <div>
-        <button id="yes">Yes ❤️</button>
-        <button id="no">No 😢</button>
-    </div>
-
-    <p id="msg"></p>
-
-</div>
-
-<!-- RESULT SCREEN -->
-<div id="result" class="hidden" style="
-position:fixed;top:0;left:0;width:100%;height:100%;
-display:flex;justify-content:center;align-items:center;
-flex-direction:column;background:#ffe6ef;text-align:center;
-">
-
-    <h1>YAY!! ❤️🎉</h1>
-    <h2 id="finalText"></h2>
-    <p>July 24 – July 26 💕</p>
-    <p>Atšvęskim mūsų dienaaa <3 💖</p>
-
-</div>
-
-<!-- audio (add your own mp3 file in repo) -->
-<audio id="music" loop>
-    <source src="music.mp3" type="audio/mp3">
-</audio>
-
-<!-- confetti lib -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
 <script>
 
 // ---------- FLOATING HEARTS ----------
@@ -141,19 +5,24 @@ function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
     heart.innerHTML = "❤️";
+    heart.style.position = "absolute";
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.fontSize = (10 + Math.random() * 20) + "px";
+    heart.style.top = "100vh";
+    heart.style.animation = "floatUp 6s linear forwards";
     document.getElementById("hearts").appendChild(heart);
 
     setTimeout(() => heart.remove(), 6000);
 }
 setInterval(createHeart, 300);
 
-// ---------- NO BUTTON ESCAPE ----------
+// ---------- ELEMENTS ----------
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
-const msg = document.getElementById("msg");
+const result = document.getElementById("result");
+const music = document.getElementById("music");
 
+// ---------- NO BUTTON ESCAPE ----------
 let dodgeCount = 0;
 
 const texts = ["No 😢", "Maybe? 🤔", "Come on 😄", "Just say yes ❤️"];
@@ -175,48 +44,49 @@ yesBtn.addEventListener("click", () => {
 
     const city = document.getElementById("city").value;
 
-    document.getElementById("finalText").innerText =
-        `See you in ${city} 💕`;
-
-    // update extra message dynamically
-    const result = document.getElementById("result");
-
-    result.innerHTML = `
-        <h1>YAY!! ❤️🎉</h1>
-        <h2>${city} 💕</h2>
-        <p>July 24 – July 26</p>
-        <p style="font-size:22px;font-weight:bold;">
-            Atšvęskim mūsų diena ❤️
-        </p>
-        <p>Can't wait for us 💖</p>
-    `;
-
+    // hide main card
     document.querySelector(".card").style.display = "none";
+
+    // show result
     result.classList.remove("hidden");
 
-    // confetti explosion
+    // FULL YAY SCREEN (dynamic)
+    result.innerHTML = `
+        <div style="
+            display:flex;
+            height:100vh;
+            width:100%;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+            background:linear-gradient(135deg,#ffe6ef,#fff0f5);
+            text-align:center;
+            font-family:Arial;
+        ">
+            <h1 style="font-size:48px;">YAY!! ❤️🎉</h1>
+            <h2 style="font-size:32px;">${city} 💕</h2>
+            <p style="font-size:20px;">July 24 – July 26</p>
+            <p style="font-size:24px;font-weight:bold;">
+                Atšvęskim mūsų diena ❤️
+            </p>
+            <p style="font-size:18px;">Can't wait for us 💖</p>
+        </div>
+    `;
+
+    // confetti
     confetti({
         particleCount: 250,
         spread: 120,
         origin: { y: 0.6 }
     });
 
-    // play music
-    const music = document.getElementById("music");
-    music.play().catch(() => {});
-});
-
-    // play music
-    const music = document.getElementById("music");
+    // music
     music.play().catch(() => {});
 });
 
 // ---------- AUTO MUSIC ON FIRST TOUCH ----------
 document.body.addEventListener("click", () => {
-    document.getElementById("music").play().catch(()=>{});
+    music.play().catch(() => {});
 }, { once: true });
 
 </script>
-
-</body>
-</html>
